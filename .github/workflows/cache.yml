@@ -20,7 +20,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os:
+          - macos-latest
+          # - ubuntu-latest
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -40,3 +42,13 @@ jobs:
         id: gems
         run: brew install-bundler-gems
         if: steps.cache.outputs.cache-hit != 'true'
+
+      - name: Debug
+        run: |
+          set -x
+
+          cd '${{ steps.set-up-homebrew.outputs.gems-path }}'
+
+          ls -all /usr/local/Homebrew/Library/Homebrew/vendor/bundle
+
+          ls -all /usr/local/Homebrew/Library/Homebrew/vendor/bundle/ruby
